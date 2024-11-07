@@ -1,13 +1,10 @@
 "use strict";
 
-/**
- * 
- */
-
 //Variables del juego
 let diccionario=["hola","adios","computador","movil","mongodb","mysql"];
-let palabraOculta=diccionario[0];
-let segundos=60;
+let letrasInvalidas=[];//Letra introducidas por el usuario que no corresponden a la palabra oculta
+let palabraOculta=diccionario[2];
+let segundos=50;
 let puntuacion=0;
 let intentosRestantes=5;
 
@@ -25,68 +22,87 @@ function actualizarTemporizador(Tiempo,contenedorHtml) {
       
 
 }
+//Recibe dos parametro l palabra oculta que el usuario adivinara 2 letra que recibamos del usuario
+//si la palabra contiene la letra devuelve la pocision: sino la tiene devuelve falso
 function incluyeLetra(palabra,letra) {
-
+      let pocisiones=[];
       for (let contador = 0; contador < palabra.length; contador++) {
             if (palabra[contador]==letra) {
                   //console.log("incluye"+contador);
                   
-                  return contador+1;//Por alguna extraña razon contador necesita un +1 para funcionar correctamente
+                  pocisiones.push(contador+1);//Por alguna extraña razon contador necesita un +1 para funcionar correctamente
             }
 
       }
-      return false;
+      if (pocisiones.length==0) {
+            return false;
+      }else{
+            return pocisiones;
+      }
+
 }
 function agregarContenedorPalabra(palabra,contenedorHtml) { 
 
       for (let indice = 1; indice < palabra.length+1; indice++) {//n°2 extraño pero aqui igual
             
             $(contenedorHtml).append(`<p class="letra${indice}">${indice}</p>`);  
-            $(contenedorHtml).data("encontrado", false);  
+            $(`.letra${indice}`).data("encontrado", false);  
       }
 }
-function partidaFinalizada(palabra) {
+function palabraDescubierta(palabra) {
       for (let indice = 1; indice <= palabra.length; indice++) {
-            
-            if ($(`.lista${indice}`).data("encontrado")==true || intentosRestantes===0) {
-                  return true;
+
+            if ($(`.letra${indice}`).data("encontrado")==false ) {
+                  //console.log($(`.letra${indice}`).data("encontrado"));
+                  return false;
             }
 
       }
-      return false;
+      return true;
 }
 //JQUERY
 $(document).ready(async function () {
+      agregarContenedorPalabra(palabraOculta,".cadaLetra");
+      $(".tiempo").append(segundos);
+      $(".palabraAdivinar").append(palabraOculta);
 
-            $(".tiempo").append(segundos);
       const temporizador=setInterval(() => { // setInterval() ejecuta un fragmento de código de forma reiterada, con un retardo de tiempo fijo entre cada llamada. 
             segundos--;
-            if (partidaFinalizada(palabraOculta)) {
-                clearInterval(temporizador);
+            if (palabraDescubierta(palabraOculta) ||  segundos<=0 || intentosRestantes<=0 ) {
+                  clearInterval(temporizador);
+                  puntuacion=puntuacion+segundos;
+                  console.log(puntuacion);
             }
             $(".tiempo").empty();
             $(".tiempo").append(segundos);
       }, 1000);
 
-
-      agregarContenedorPalabra(palabraOculta,".cadaLetra");
-      $(".palabraAdivinar").append(palabraOculta);
-
       $(".enviar").click(function () { 
+            inputLetra=$(".letraEntrada").val();
 
-            if (incluyeLetra(palabraOculta,$(".letraEntrada").val())==false) {
-                  console.log("Vocal No pertenece");
-                  intentosRestantes--;
-            }
-            else if (incluyeLetra(palabraOculta,$(".letraEntrada").val())<=palabraOculta.length) {
+            if ( $(".letraEntrada").val().trim()!=""  && !(letrasInvalidas.includes(inputLetra)) ) {
+                  if (incluyeLetra(palabraOculta,inputLetra)==false) {
+                        console.log("Vocal No pertenece");
+                        intentosRestantes--;
+                        letrasInvalidas.push(inputLetra);
+                  }
+                  else if (incluyeLetra(palabraOculta,inputLetra)) {
 
-                  console.log(`.letra${incluyeLetra(palabraOculta,$(".letraEntrada").val())}`);
-                  $(`.letra${incluyeLetra(palabraOculta,$(".letraEntrada").val())}`).empty();
-                  $(`.letra${incluyeLetra(palabraOculta,$(".letraEntrada").val())}`).append($(".letraEntrada").val());
-                  $(`.letra${incluyeLetra(palabraOculta,$(".letraEntrada").val())}`).data("encontrado", true)
+                        for (let indice = 0; indice < incluyeLetra(palabraOculta,inputLetra).length; indice++) {
+                              
+                              $(`.letra${incluyeLetra(palabraOculta,inputLetra)[indice]}`).empty();
+                              $(`.letra${incluyeLetra(palabraOculta,inputLetra)[indice]}`).append($(".letraEntrada").val());
+                              $(`.letra${incluyeLetra(palabraOculta,inputLetra)[indice]}`).data("encontrado", true);
+                              
+                        }
+                        puntuacion=puntuacion+5;
+                  }
+                  
             }
-            //${incluyeLetra(palabraOculta,$(".letraEntrada").val())}
-            //${incluyeLetra(palabraOculta,$(".letraEntrada").val())}
-            
+            $(".letraEntrada").val("");//despues de procesar una letra limpiamos el campo                 //console.log($(`.letra${incluyeLetra(palabraOculta,inputLetra)}`).data("encontrado"));
       });
+
 });
+
+
+
