@@ -60,18 +60,21 @@ function palabraDescubierta(palabra) {
       }
       return true;
 }
-function obtenerPhp() {
+async function obtenerPhp() {
       // 👇 URL to your data location
-      fetch("http://localhost:3000/src/funcionalidades/bd.php") 
-      .then((res) => res.json())
-      .then((data) => {
-          const result = document.getElementById("result");
-          result.textContent = JSON.stringify(data);
-          console.log(JSON.stringify(data));
-          
-});
+      new Promise((resolve, reject) => {
+            fetch("http://localhost:3000/src/funcionalidades/recuperarDatos.php") 
+            .then(response => response.json())
+            .then(data => {
+                  console.log(data);
+                  
+                resolve(data); // Aquí data es el objeto JavaScript parseado
+            })
+      })
 }
-obtenerPhp();
+
+console.log(obtenerPhp());
+
 //JQUERY
 $(document).ready(async function () {
       agregarContenedorPalabra(palabraOculta,".cadaLetra");
