@@ -45,7 +45,7 @@ function agregarContenedorPalabra(palabra,contenedorHtml) {
 
       for (let indice = 1; indice < palabra.length+1; indice++) {//n°2 extraño pero aqui igual
             
-            $(contenedorHtml).append(`<p class="letra${indice}">${indice}</p>`);  
+            $(contenedorHtml).append(`<p class="letra${indice}">_</p>`);  
             $(`.letra${indice}`).data("encontrado", false);  
       }
 }
@@ -77,7 +77,10 @@ console.log(obtenerPhp());
 
 //JQUERY
 $(document).ready(async function () {
+      
+      
       agregarContenedorPalabra(palabraOculta,".cadaLetra");
+      $(".puntuacion").append("x",puntuacion);
       $(".tiempo").append(segundos);
       $(".palabraAdivinar").append(palabraOculta);
 
@@ -89,33 +92,52 @@ $(document).ready(async function () {
                   console.log(puntuacion);
             }
             $(".tiempo").empty();
+            if (segundos<10) {
+                  $(".tiempo").append("0",segundos);
+            }else{
             $(".tiempo").append(segundos);
-      }, 1000);
-
-      $(".enviar").click(function () { 
-            inputLetra=$(".letraEntrada").val();
-
-            if ( $(".letraEntrada").val().trim()!=""  && !(letrasInvalidas.includes(inputLetra)) ) {
-                  if (incluyeLetra(palabraOculta,inputLetra)==false) {
-                        console.log("Vocal No pertenece");
-                        intentosRestantes--;
-                        letrasInvalidas.push(inputLetra);
-                  }
-                  else if (incluyeLetra(palabraOculta,inputLetra)) {
-
-                        for (let indice = 0; indice < incluyeLetra(palabraOculta,inputLetra).length; indice++) {
-                              
-                              $(`.letra${incluyeLetra(palabraOculta,inputLetra)[indice]}`).empty();
-                              $(`.letra${incluyeLetra(palabraOculta,inputLetra)[indice]}`).append($(".letraEntrada").val());
-                              $(`.letra${incluyeLetra(palabraOculta,inputLetra)[indice]}`).data("encontrado", true);
-                              
-                        }
-                        puntuacion=puntuacion+5;
-                  }
-                  
             }
-            $(".letraEntrada").val("");//despues de procesar una letra limpiamos el campo                 //console.log($(`.letra${incluyeLetra(palabraOculta,inputLetra)}`).data("encontrado"));
-      });
+            $(".puntuacion").empty();
+            $(".puntuacion").append("x",puntuacion);
+      }, 1000);
+      
+
+    
+
+      $(".letraEntrada").on("keydown", function(event) {  // || $(".enviar").click(function () { //Stack https://stackoverflow.com/questions/979662/how-can-i-detect-pressing-enter-on-the-keyboard-using-jquery
+            if (event.key === "Enter") { // Detecta la tecla Enter
+                  inputLetra=$(".letraEntrada").val();
+
+                  if ( $(".letraEntrada").val().trim()!=""  && !(letrasInvalidas.includes(inputLetra)) ) {
+                        if (incluyeLetra(palabraOculta,inputLetra)==false) {
+                              console.log("Vocal No pertenece");
+                              intentosRestantes--;
+                              letrasInvalidas.push(inputLetra);
+                        }
+                        else if (incluyeLetra(palabraOculta,inputLetra)) {
+      
+                              for (let indice = 0; indice < incluyeLetra(palabraOculta,inputLetra).length; indice++) {
+                                    
+                                    $(`.letra${incluyeLetra(palabraOculta,inputLetra)[indice]}`).empty();
+                                    $(`.letra${incluyeLetra(palabraOculta,inputLetra)[indice]}`).append($(".letraEntrada").val());
+                                    $(`.letra${incluyeLetra(palabraOculta,inputLetra)[indice]}`).data("encontrado", true);
+                                    
+                              }
+                              puntuacion=puntuacion+5;
+                        }
+                        
+                  }
+                  $(".letraEntrada").val("");//despues de procesar una letra limpiamos el campo        
+            }
+        });
+
+        $(".boton-fijo").click(function () {
+            location.reload()
+        })
+        $(".boton-fijo-izquiera").click(async function () {
+            $(".boton-fijo-izquiera").empty()
+            $(".boton-fijo-izquiera").append(await obtenerPhp());
+        })
 
 });
 

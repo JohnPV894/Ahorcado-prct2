@@ -4,30 +4,40 @@
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <script type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+      <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="https://www.dafont.com/es/8-bit-hud.font">
+
       <link rel="stylesheet" href="style.css">
       <title>Ahorcado</title>
 </head>
 <body>
       <!--<form> -->
+
       <div class="contenedorPrincipal">
 
-            <var class="tiempo">
+            <header>
+                  AHORCADO
+            </header>
+            <img src="./imagenes/marioSplasdaño.png" alt="" class="segundoFondo">
+            <div class="barra-superior">
+                  <p class="moneda"><img src="./imagenes/moneda.jfif" alt="">  <var class="puntuacion"></var></p>
+                  <p class="contTiempo">TIME <var class="tiempo"></var></p>
+              </div> 
+            </var></p>
 
-            </var>
-            <p class="palabraAdivinar">
-            
-            </p>
+            <br>
             <var class="cadaLetra">
                   <!--<p class="letra1"></p>
                       <p class="letra2"></p> 
                   etc etc--> 
             </var>
-
-                  <p><input type="text" class="letraEntrada" placeholder="Letra" name="input1" required ></p>
-                  <p><input class="enviar" type="submit" value="Acceder" ></p>
+            <br>
+            <p class="contInput"><input type="text" class="letraEntrada" placeholder="Letra" name="input1" required ></p>
 
 
       </div>
+      <button class="boton-fijo">REINICIAR</button>
+      <button class="boton-fijo-izquiera">PUNTUACIONES</button>
 
 
       <script src="../funcionalidades/main.js" type="text/javascript"></script>

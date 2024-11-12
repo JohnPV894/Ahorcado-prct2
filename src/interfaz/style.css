@@ -1,11 +1,38 @@
 *{
       padding: 0;
       margin: 0;
-      font-family: 'PT Sans', Verdana, sans-serif;
+      font-family: '8bitHUD';
       font-size: 1.1em;
 
+
 }
+@font-face {
+    font-family: '8bitHUD';  /* Nombre para usar en CSS */
+    src: url('./fuente/8-bit-hud.ttf') format('truetype'); /* Ruta al archivo de la fuente */
+}
+body{
+      color: white;
+      background: url('./imagenes/fondoGrande.png');
+      background-size: cover;
+      background-position: center;
+      min-height: 100vh;  
+
+}
+header {
+      font-size: 5em;
+      position: absolute;
+      letter-spacing: 0.5em;
+      top: 0;
+      width: 100%;
+      text-align: center;
+      font-family: 'VT323', monospace;
+      margin: 20px;
+      padding-bottom: 20px;
+
+  }
+  
 .contenedorPrincipal{
+
       width: 100%;
       height: 100vh;/*vh	1% de la altura de la ventana gráfica.*/
 
@@ -14,7 +41,66 @@
       justify-content: center;
       flex-direction: column;
 }
+.barra-superior {
+      display: flex;
+      justify-content: space-between;
+      width: 40%;
+
+      box-sizing: border-box;
+  }
 var{
       display: flex;
       flex-direction: row;
+
+}
+.moneda{
+      display: flex;
+      
+}
+.moneda>img{
+      width: 80px;
+      height: 100px;
+}
+.letraEntrada{
+
+      text-align: center;
+}
+
+.contTiempo, .cadaLetra, .palabraAdivinar ,.contInput ,.barra-superior{
+      z-index: 2;
+}
+.segundoFondo{
+      padding-top: 170px;
+      position: absolute;
+      height: 85vh;
+      z-index: 1;
+}
+.boton-fijo {
+      position: fixed;
+      top: 50%;
+      right: 20px;
+      transform: translateY(-50%);
+      padding: 10px 20px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+.boton-fijo-izquiera{
+      position: fixed;
+      top: 50%;
+      left: 20px;
+      transform: translateY(-50%);
+      padding: 10px 20px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+.cadaLetra>p{
+      padding: 10px;
+      border: #d4ff00;
+      background-color: #d4ff00;
 }
