@@ -12,12 +12,25 @@
 </head>
 <body>
       <!--<form> -->
-
+   
+      <div id="popup" style="display:none;"><!----->
+            <div>
+            <p>EnhoraBuena Partida Finalizada</p>
+            <form action="bd.php" method="post">
+                <p>
+                    <input type="text" id="userName" name="nombre"  placeholder="Ingrese su nombre Aqui:..." required>
+                    <input type="hidden" name="puntuacion" value="0" class="puntuacion">
+                    <input type="hidden" name="modo" value="" >
+                    <button type="submit"><img src="https://www.pinclipart.com/picdir/big/201-2016537_send-message-icon-white-clipart-computer-icons-clip.png" alt=""></button>
+                </p>
+            </form>
+            
+            </div>
+        </div> 
       <div class="contenedorPrincipal">
-
             <header>
                   AHORCADO
-            </header>
+            </header>      
             <img src="./imagenes/marioSplasdaño.png" alt="" class="segundoFondo">
             <div class="barra-superior">
                   <p class="moneda"><img src="./imagenes/moneda.jfif" alt="">  <var class="puntuacion"></var></p>

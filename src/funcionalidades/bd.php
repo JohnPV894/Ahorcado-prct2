@@ -1,30 +1,102 @@
 <?php
-require_once __DIR__ . "/vendor/autoload.php";
 
+require __DIR__ . '/../../vendor/autoload.php';
 
-try {
-  $client->test->command(['ping' => 1]);
-  echo 'Successfully pinged the MongoDB server.', PHP_EOL;
-} catch (MongoDB\Driver\Exception\RuntimeException $e) {
-  printf("Failed to ping the MongoDB server: %s\n", $e->getMessage());
-}
-
-
-
-
-/*
-function obtenerBaseDeDatos()
+function obtenerClienteMongoDB()
 {
-    $host = "127.0.0.1";
-    $puerto = "27017";
-    $usuario = rawurlencode("parzibyte");
-    $pass = rawurlencode("hunter2");
-    $nombreBD = "agenda";
-    # Crea algo como mongodb://parzibyte:hunter2@127.0.0.1:27017/agenda
-    $cadenaConexion = sprintf("mongodb://%s:%s@%s:%s/%s", $usuario, $pass, $host, $puerto, $nombreBD);
+    $cluster = "cluster0.6xkz1.mongodb.net/";
+    $usuario = rawurlencode("santiago894");
+    $pass = rawurlencode("P5wIGtXue8HvPvli");
+    $cadenaConexion = sprintf("mongodb+srv://%s:%s@%s", $usuario, $pass, $cluster);
     $cliente = new MongoDB\Client($cadenaConexion);
-    return $cliente->selectDatabase($nombreBD);
+    //"mongodb+srv://$usuario:$pass@cluster0.6xkz1.mongodb.net/"
+    return $cliente;
 }
-obtener una instancia para trabajar con PHP y MongoDB
-*/
+function mostrarBasesDeDatos()
+{
+    $listaBD=[];
+    $cliente = obtenerClienteMongoDB();
+    $basesDeDatos = $cliente->listDatabases();
+
+    //Atencion basesDeDatos es un objeto de la clase mongoDB CUIDADO AL ITERAR
+    foreach ($basesDeDatos as $cadaBaseDeDatos) {
+        array_push( $listaBD, $cadaBaseDeDatos->getName());
+    }
+
+    //El metodo getName devuelve un dato string normal
+    for ($i=0; $i <sizeof( $listaBD) ; $i++) { 
+        echo"Data Base N°$i:". $listaBD[$i] ."<br>";
+    }
+ 
+    return $listaBD;
+}
+
+function mostrarColecciones()
+{
+    $cliente = obtenerClienteMongoDB();
+    foreach ($cliente->ahorcado->listCollections() as $collectionInfo) {
+        print_r($collectionInfo) . "<br>";
+    }
+}
+
+function comprobarExistenciaBD($nombreBD){
+    $listaBD = mostrarBasesDeDatos();
+    foreach ($listaBD as $cadaBaseDeDatos) {
+        if ($nombreBD === $cadaBaseDeDatos){
+            return true;
+        }
+    }
+    return false;
+}
+function comprobarExistenciaColeaccion($nombreBD){
+    $listaBD = mostrarBasesDeDatos();
+    foreach ($listaBD as $cadaBaseDeDatos) {
+        if ($nombreBD === $cadaBaseDeDatos){
+            return true;
+        }
+    }
+    return false;
+}
+
+//if (comprobarExistenciaBD("ahorcado")) {
+//   echo "Ya existe esa base de datos<br>";
+//}else{
+//    echo "No existe aun<br>";
+//}
+$cliente=obtenerClienteMongoDB();
+
+$baseDatos = $cliente -> selectDatabase('ahorcado');
+
+$coleccion = $cliente -> ahorcado -> CreateCollection('puntuaciones'); //tabla a terminos Sql
+$coleccion = $cliente -> selectCollection('ahorcado',"puntuaciones");
+
+
+//mostrarBasesDeDatos() ;
+
+function insertarUsuario($nombreUsuario,$puntuacion,$bd,$coleccion){
+    $cliente=obtenerClienteMongoDB();
+    $coleccion = $cliente ->selectCollection($bd,$coleccion);
+    $resultado = $coleccion->insertOne([
+    'nombreUsuario'=> $nombreUsuario,
+    'puntuacion' => $puntuacion
+    ]);
+}
+
+//echo $cliente->puntuacion->find();
+$document = $coleccion->findOne(['nombreUsuario' => 'John']);
+echo json_encode($document), PHP_EOL ,"<br>";
+$document2 = $coleccion->find();
+foreach ($document2 as $documento) {
+    echo "<pre>";
+    print_r($documento);  // Muestra cada documento de la colección
+    echo "</pre>";
+}
+
+//$select = $cliente ->
+////mostrarColecciones() ;
+
+
+//https://parzibyte.me/blog/2018/12/13/php-mongodb-crud/
+
+
 ?>
