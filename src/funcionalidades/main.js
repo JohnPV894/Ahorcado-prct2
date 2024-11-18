@@ -3,14 +3,19 @@
 //Variables del juego
 let diccionario=["hola","adios","computador","movil","mongodb","mysql"];
 let letrasInvalidas=[];//Letra introducidas por el usuario que no corresponden a la palabra oculta
-let palabraOculta=diccionario[2];
+let palabraOculta=diccionario[randomLimitado(0,5)];
 let segundos=50;
 let puntuacion=0;
 let intentosRestantes=5;
 
 //Entrada de datos
 let inputLetra=undefined;
-
+//····················································
+function randomLimitado(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min + 1) + min);
+  }
 //#####################################################
 function actualizarTemporizador(Tiempo,contenedorHtml) {
       $(contenedorHtml).append(Tiempo);
@@ -45,7 +50,7 @@ function agregarContenedorPalabra(palabra,contenedorHtml) {
 
       for (let indice = 1; indice < palabra.length+1; indice++) {//n°2 extraño pero aqui igual
             
-            $(contenedorHtml).append(`<p class="letra${indice}">_</p>`);  
+            $(contenedorHtml).append(`<p class="letra${indice}">?</p>`);  
             $(`.letra${indice}`).data("encontrado", false);  
       }
 }
@@ -88,6 +93,7 @@ $(document).ready(async function () {
             segundos--;
             if (palabraDescubierta(palabraOculta) ||  segundos<=0 || intentosRestantes<=0 ) {
                   clearInterval(temporizador);
+                  $("#popup").fadeIn(); 
                   puntuacion=puntuacion+segundos;
                   console.log(puntuacion);
             }

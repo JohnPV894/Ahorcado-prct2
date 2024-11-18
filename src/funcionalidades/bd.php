@@ -66,21 +66,22 @@ function comprobarExistenciaColeaccion($nombreBD){
 $cliente=obtenerClienteMongoDB();
 
 $baseDatos = $cliente -> selectDatabase('ahorcado');
+$baseDatos->createCollection('puntuaciones'); //tabla a terminos Sql
 
-$coleccion = $cliente -> ahorcado -> CreateCollection('puntuaciones'); //tabla a terminos Sql
-$coleccion = $cliente -> selectCollection('ahorcado',"puntuaciones");
+$coleccionPuntuaciones = $cliente->selectCollection('ahorcado', 'puntuaciones');
 
 
 //mostrarBasesDeDatos() ;
 
-function insertarUsuario($nombreUsuario,$puntuacion,$bd,$coleccion){
-    $cliente=obtenerClienteMongoDB();
-    $coleccion = $cliente ->selectCollection($bd,$coleccion);
-    $resultado = $coleccion->insertOne([
-    'nombreUsuario'=> $nombreUsuario,
-    'puntuacion' => $puntuacion
+function insertarUsuario($nombreUsuario, $puntuacion, $nombreBD, $nombreColeccion) {
+    $cliente = obtenerClienteMongoDB();
+    $coleccion = $cliente->selectCollection($nombreBD, $nombreColeccion);
+    $coleccion->insertOne([
+        'nombreUsuario' => $nombreUsuario,
+        'puntuacion' => $puntuacion
     ]);
 }
+//insertarUsuario($nombre, $puntuacion, 'ahorcado', 'puntuaciones');
 
 //echo $cliente->puntuacion->find();
 $document = $coleccion->findOne(['nombreUsuario' => 'John']);
@@ -92,9 +93,27 @@ foreach ($document2 as $documento) {
     echo "</pre>";
 }
 
-//$select = $cliente ->
-////mostrarColecciones() ;
+//Recuperar datos con el metodo post
+if (isset($_POST['nombre'], $_POST['puntuacion'])) {
+    $nombre = $_POST['nombre'];
+    $puntuacion = $_POST['puntuacion'];
+    insertarUsuario($nombre,$puntuacion,$baseDatos,$coleccion);
 
+    header("Location: http://localhost:3000/../interfaz/index.html");
+    
+ 
+    exit(); // salir para evitar enviar más contenido
+ 
+ } else {
+    echo "Error: No se recibieron los datos necesarios. Datos recibidos: " .
+         (isset($_POST['nombre']) ? $_POST['nombre'] : "Nombre no proporcionado") . " || " .
+         (isset($_POST['puntuacion']) ? $_POST['puntuacion'] : "puntuacion no proporcionada") . " || " ;
+ 
+ 
+      echo "<pre>";
+      print_r($_POST);
+      echo "</pre>";
+ }
 
 //https://parzibyte.me/blog/2018/12/13/php-mongodb-crud/
 

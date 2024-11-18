@@ -22,14 +22,13 @@ header {
       font-size: 5em;
       position: absolute;
       letter-spacing: 0.5em;
-      top: 0;
-      width: 100%;
+      left: 25%;
+      top: 0%;
       text-align: center;
       font-family: 'VT323', monospace;
-      margin: 20px;
-      padding-bottom: 20px;
 
 }
+
 #popup{
 
       position:fixed;/*Sobreponer elemento o fijar*/
@@ -48,31 +47,35 @@ header {
       font-size: 2em;
       background: blue;
       text-align: center;
-      width: 50%;
+      width: 60%;
       padding: 60px;
       border-radius: 6vh;
   }
   #popup>div>p{
-      height: 20%;
+      height: 5em;
       width: 100%;
-      padding: 0px;
   
   }
   #popup>div>form>p>input {
-      font-size: 0.6em;
+      padding: 0.5em;
+      font-size: 0.3em;
       text-align: center;
       border-radius: 6vh 1vh 1vh 6vh;
-      width: 49%;
+      width: 59%;
 
   }
   #popup>div>form>p>button { 
-      text-align: center;
-      height: 0.6em;
+      position: absolute;
+      top: 62.5%;
+      margin-top: 10px;
+      height: 0.8em;
       width: 8%;
       background: rgb(88, 176, 228);
       border-radius: 1vh 6vh 6vh 1vh;
   }
   #popup>div>form>p>button>img{
+      position: relative;
+      bottom: 90%;
       height: 0.6em;
   }
 .contenedorPrincipal{
@@ -114,37 +117,40 @@ var{
       z-index: 2;
 }
 .segundoFondo{
+      width: 46.9%;
       padding-top: 170px;
       position: absolute;
       height: 85vh;
       z-index: 1;
 }
 .boton-fijo {
-      position: fixed;
-      top: 50%;
-      right: 20px;
-      transform: translateY(-50%);
-      padding: 10px 20px;
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      cursor: pointer;
-      font-size: 16px;
-    }
+  position: fixed;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  padding: 10px 20px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
 .boton-fijo-izquiera{
-      position: fixed;
-      top: 50%;
-      left: 20px;
-      transform: translateY(-50%);
-      padding: 10px 20px;
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      cursor: pointer;
-      font-size: 16px;
-    }
+  position: fixed;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+  padding: 10px 20px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
 .cadaLetra>p{
+      color:  rgb(162, 106, 1);
       padding: 10px;
-      border: #d4ff00;
-      background-color: #d4ff00;
+      border: solid;
+
+       background-color: rgb(250, 179, 48);
 }
